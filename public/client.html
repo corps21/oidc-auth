@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Create Account</title>
+  <title>Register OAuth Client</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
@@ -55,7 +55,7 @@
 
     .card {
       width: 100%;
-      max-width: 360px;
+      max-width: 420px;
       background: var(--card-bg);
       border: 1px solid var(--border);
       border-radius: calc(var(--radius) + 4px);
@@ -79,10 +79,12 @@
       margin-bottom: 1rem;
     }
 
+    .icon svg { color: var(--bg); }
+
     h1 {
       font-size: 1.375rem;
       font-weight: 600;
-      letter-spacing: -0.02em;
+      letter-spacing: 0;
       line-height: 1.3;
     }
 
@@ -108,9 +110,9 @@
       color: var(--fg);
     }
 
-    input {
+    input,
+    textarea {
       width: 100%;
-      height: 2.375rem;
       padding: 0 0.75rem;
       font-family: inherit;
       font-size: 0.875rem;
@@ -122,27 +124,41 @@
       transition: border-color 0.15s, box-shadow 0.15s;
     }
 
-    input::placeholder { color: var(--muted); }
+    input {
+      height: 2.375rem;
+    }
 
-    input:focus {
+    textarea {
+      min-height: 5rem;
+      resize: vertical;
+      padding-top: 0.625rem;
+      line-height: 1.5;
+    }
+
+    input::placeholder,
+    textarea::placeholder { color: var(--muted); }
+
+    input:focus,
+    textarea:focus {
       border-color: var(--ring);
       box-shadow: 0 0 0 3px color-mix(in srgb, var(--ring) 20%, transparent);
     }
 
-    input[aria-invalid="true"] {
+    input[aria-invalid="true"],
+    textarea[aria-invalid="true"] {
       border-color: #ef4444;
     }
 
-    input[aria-invalid="true"]:focus {
+    input[aria-invalid="true"]:focus,
+    textarea[aria-invalid="true"]:focus {
       box-shadow: 0 0 0 3px color-mix(in srgb, #ef4444 20%, transparent);
     }
 
     .hint {
       font-size: 0.75rem;
       color: var(--muted);
+      line-height: 1.4;
     }
-
-    .hint.error { color: #ef4444; }
 
     button[type="submit"] {
       width: 100%;
@@ -178,37 +194,52 @@
 
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    .error-msg {
-      display: none;
-      font-size: 0.8125rem;
-      color: #ef4444;
-      background: color-mix(in srgb, #ef4444 10%, transparent);
-      border: 1px solid color-mix(in srgb, #ef4444 25%, transparent);
-      border-radius: var(--radius);
-      padding: 0.625rem 0.75rem;
-    }
-
+    .error-msg,
     .success-msg {
       display: none;
       font-size: 0.8125rem;
-      color: #16a34a;
-      background: color-mix(in srgb, #16a34a 10%, transparent);
-      border: 1px solid color-mix(in srgb, #16a34a 25%, transparent);
       border-radius: var(--radius);
       padding: 0.625rem 0.75rem;
-    }
-
-    .terms {
-      font-size: 0.75rem;
-      color: var(--muted);
-      text-align: center;
       line-height: 1.5;
     }
 
-    .terms a {
+    .error-msg {
+      color: #ef4444;
+      background: color-mix(in srgb, #ef4444 10%, transparent);
+      border: 1px solid color-mix(in srgb, #ef4444 25%, transparent);
+    }
+
+    .success-msg {
+      color: #16a34a;
+      background: color-mix(in srgb, #16a34a 10%, transparent);
+      border: 1px solid color-mix(in srgb, #16a34a 25%, transparent);
+    }
+
+    .credentials {
+      display: none;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.75rem;
+      gap: 0.75rem;
+      flex-direction: column;
+    }
+
+    .credential {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .credential code {
+      display: block;
+      width: 100%;
+      overflow-wrap: anywhere;
       color: var(--fg);
-      text-decoration: underline;
-      text-underline-offset: 2px;
+      background: color-mix(in srgb, var(--muted) 12%, transparent);
+      border-radius: var(--radius);
+      padding: 0.625rem 0.75rem;
+      font-size: 0.8125rem;
+      line-height: 1.4;
     }
 
     .footer {
@@ -224,87 +255,97 @@
       text-decoration: none;
     }
     .footer a:hover { text-decoration: underline; }
+
+    @media (max-width: 420px) {
+      .card { padding: 1.5rem; }
+      .field-row { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
   <div class="card">
     <div class="header">
       <div class="icon">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--bg)">
-          <path d="M12 2a5 5 0 1 0 0 10A5 5 0 0 0 12 2z"/>
-          <path d="M20 21a8 8 0 1 0-16 0"/>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <rect width="7" height="7" x="3" y="3" rx="1"/>
+          <rect width="7" height="7" x="14" y="3" rx="1"/>
+          <rect width="7" height="7" x="14" y="14" rx="1"/>
+          <rect width="7" height="7" x="3" y="14" rx="1"/>
         </svg>
       </div>
-      <h1>Create an account</h1>
-      <p class="subtitle">Enter your details to get started</p>
+      <h1>Register OAuth client</h1>
+      <p class="subtitle">Create credentials for an application</p>
     </div>
 
-    <form class="form" id="signupForm" novalidate>
+    <form class="form" id="clientForm" novalidate>
       <div id="errorMsg" class="error-msg" role="alert"></div>
       <div id="successMsg" class="success-msg" role="status"></div>
 
+      <div class="field">
+        <label for="appName">App name</label>
+        <input id="appName" name="appName" type="text" maxlength="100" placeholder="Acme Dashboard" required />
+      </div>
+
+      <div class="field">
+        <label for="redirectUri">Redirect URL</label>
+        <input id="redirectUri" name="redirectUri" type="url" placeholder="http://localhost:3000/auth/callback" required />
+        <span class="hint">Users return to this URL after authentication.</span>
+      </div>
+
       <div class="field-row">
         <div class="field">
-          <label for="firstName">First name</label>
-          <input id="firstName" name="firstName" type="text" autocomplete="given-name" placeholder="John" required />
+          <label for="contactEmail">Contact email</label>
+          <input id="contactEmail" name="contactEmail" type="email" autocomplete="email" placeholder="admin@example.com" />
         </div>
         <div class="field">
-          <label for="lastName">Last name</label>
-          <input id="lastName" name="lastName" type="text" autocomplete="family-name" placeholder="Doe" required />
+          <label for="homepageUrl">Homepage URL</label>
+          <input id="homepageUrl" name="homepageUrl" type="url" placeholder="https://example.com" />
         </div>
       </div>
 
       <div class="field">
-        <label for="email">Email</label>
-        <input id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required />
+        <label for="logoUrl">Logo URL</label>
+        <input id="logoUrl" name="logoUrl" type="url" placeholder="https://example.com/logo.png" />
       </div>
 
       <div class="field">
-        <label for="password">Password</label>
-        <input id="password" name="password" type="password" autocomplete="new-password" placeholder="••••••••" required />
-        <span class="hint" id="passwordHint">Must be at least 8 characters</span>
-      </div>
-
-      <div class="field">
-        <label for="confirmPassword">Confirm password</label>
-        <input id="confirmPassword" name="confirmPassword" type="password" autocomplete="new-password" placeholder="••••••••" required />
-        <span class="hint error" id="confirmHint" style="display:none">Passwords do not match</span>
+        <label for="description">Extra information</label>
+        <textarea id="description" name="description" maxlength="500" placeholder="What this app does, who owns it, or any notes you need later."></textarea>
       </div>
 
       <button type="submit" id="submitBtn">
         <span class="spinner" id="spinner"></span>
-        <span id="btnText">Create account</span>
+        <span id="btnText">Create client</span>
       </button>
 
-      <p class="terms">
-        By creating an account you agree to our
-        <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.
-      </p>
+      <div id="credentials" class="credentials" aria-live="polite">
+        <div class="credential">
+          <label>Client ID</label>
+          <code id="clientId"></code>
+        </div>
+        <div class="credential">
+          <label>Client secret</label>
+          <code id="clientSecret"></code>
+          <span class="hint">Store this secret now. It will not be shown again.</span>
+        </div>
+      </div>
     </form>
 
     <div class="footer">
-      Already have an account? <a href="/o/authenticate">Sign in</a>
+      Already registered? <a href="/o/authenticate">Test sign in</a>
     </div>
   </div>
 
   <script>
-    const form = document.getElementById('signupForm');
+    const form = document.getElementById('clientForm');
     const submitBtn = document.getElementById('submitBtn');
     const spinner = document.getElementById('spinner');
     const btnText = document.getElementById('btnText');
     const errorMsg = document.getElementById('errorMsg');
     const successMsg = document.getElementById('successMsg');
-    const passwordInput = document.getElementById('password');
-    const confirmInput = document.getElementById('confirmPassword');
-    const confirmHint = document.getElementById('confirmHint');
-
-    const params = new URLSearchParams(window.location.search);
-
-    confirmInput.addEventListener('input', () => {
-      const mismatch = confirmInput.value && confirmInput.value !== passwordInput.value;
-      confirmHint.style.display = mismatch ? 'block' : 'none';
-      confirmInput.setAttribute('aria-invalid', mismatch ? 'true' : 'false');
-    });
+    const credentials = document.getElementById('credentials');
+    const clientId = document.getElementById('clientId');
+    const clientSecret = document.getElementById('clientSecret');
 
     function showError(msg) {
       errorMsg.textContent = msg;
@@ -326,64 +367,69 @@
     function setLoading(loading) {
       submitBtn.disabled = loading;
       spinner.style.display = loading ? 'block' : 'none';
-      btnText.textContent = loading ? 'Creating account…' : 'Create account';
+      btnText.textContent = loading ? 'Creating client...' : 'Create client';
+    }
+
+    function isValidHttpUrl(value) {
+      if (!value) return true;
+      try {
+        const url = new URL(value);
+        return url.protocol === 'http:' || url.protocol === 'https:';
+      } catch {
+        return false;
+      }
     }
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       hideMessages();
+      credentials.style.display = 'none';
 
-      const firstName = document.getElementById('firstName').value.trim();
-      const lastName = document.getElementById('lastName').value.trim();
-      const email = document.getElementById('email').value.trim();
-      const password = passwordInput.value;
-      const confirmPassword = confirmInput.value;
+      const payload = {
+        appName: document.getElementById('appName').value.trim(),
+        redirectUri: document.getElementById('redirectUri').value.trim(),
+        contactEmail: document.getElementById('contactEmail').value.trim(),
+        homepageUrl: document.getElementById('homepageUrl').value.trim(),
+        logoUrl: document.getElementById('logoUrl').value.trim(),
+        description: document.getElementById('description').value.trim(),
+      };
 
-      if (!firstName || !lastName || !email || !password || !confirmPassword) {
-        showError('Please fill in all fields.');
+      if (!payload.appName || !payload.redirectUri) {
+        showError('Please enter an app name and redirect URL.');
         return;
       }
 
-      if (password.length < 8) {
-        showError('Password must be at least 8 characters.');
+      if (!isValidHttpUrl(payload.redirectUri)) {
+        showError('Redirect URL must be a valid http or https URL.');
         return;
       }
 
-      if (password !== confirmPassword) {
-        showError('Passwords do not match.');
+      if (!isValidHttpUrl(payload.homepageUrl) || !isValidHttpUrl(payload.logoUrl)) {
+        showError('Optional URLs must use http or https.');
         return;
       }
 
       setLoading(true);
-      
+
       try {
-        const res = await fetch('/o/authenticate/sign-up', {
+        const res = await fetch('/o/client', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            firstName,
-            lastName,
-            email,
-            password,
-            clientId: params.get('client_id'),
-            // redirect_uri: params.get('redirect_uri'),
-            // state: params.get('state'),
-            // nonce: params.get('nonce'),
-          }),
+          body: JSON.stringify(payload),
         });
 
         const data = await res.json().catch(() => ({}));
 
         if (!res.ok) {
           showError(data.message || 'Something went wrong. Please try again.');
-        } else if (data.redirect) {
-          window.location.href = data.redirect;
-        } else {
-          showSuccess('Account created! Redirecting…');
-          setTimeout(() => {
-            window.location.href = `/o/authenticate${window.location.search}`;
-          }, 1500);
+          return;
         }
+
+        clientId.textContent = data.client_id;
+        clientSecret.textContent = data.client_secret;
+        credentials.style.display = 'flex';
+        showSuccess('Client created successfully.');
+        form.reset();
       } catch {
         showError('Something went wrong. Please try again.');
       } finally {

@@ -283,7 +283,7 @@
     const errorMsg = document.getElementById('errorMsg');
 
     const params = new URLSearchParams(window.location.search);
-
+    console.log(params.get('client_id'))
     function showError(msg) {
       errorMsg.textContent = msg;
       errorMsg.style.display = 'block';
@@ -320,7 +320,7 @@
           body: JSON.stringify({
             email,
             password,
-            client_id: params.get('client_id'),
+            clientId: params.get('client_id'),
             redirect_uri: params.get('redirect_uri'),
             state: params.get('state'),
             nonce: params.get('nonce'),
